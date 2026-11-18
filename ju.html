@@ -3,96 +3,154 @@ from pathlib import Path
 html = r'''<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080d12">
-  <title>EGRESO.exe | Invitación</title>
-  <style>
-    :root { --bg:#080d12; --panel:#101a22; --green:#65f6a6; --muted:#9bb0bd; --line:#234033; }
-    * { box-sizing:border-box; }
-    body {
-      margin:0; min-height:100vh; padding:28px 16px; display:grid; place-items:center;
-      background:radial-gradient(circle at 50% 0%, #173329 0, #0b1419 38%, var(--bg) 75%);
-      color:#e8f4ee; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    }
-    .window { width:min(100%,620px); border:1px solid #315442; border-radius:16px; overflow:hidden;
-      background:rgba(12,20,25,.96); box-shadow:0 24px 80px #0009; }
-    .bar { display:flex; align-items:center; gap:8px; padding:13px 16px; background:#17242a; border-bottom:1px solid #294238; }
-    .dot { width:10px; height:10px; border-radius:50%; background:#f36c6c; }
-    .dot:nth-child(2){background:#f3c969}.dot:nth-child(3){background:#65d99a}
-    .bar span { margin-left:auto; color:#9bb0bd; font-size:12px; }
-    main { padding:clamp(22px,6vw,42px); }
-    .tag { color:var(--green); font-size:12px; letter-spacing:2px; }
-    h1 { margin:12px 0 8px; font-size:clamp(30px,8vw,48px); line-height:1; }
-    h1 em { color:var(--green); font-style:normal; }
-    .subtitle { color:var(--muted); line-height:1.6; }
-    .terminal { margin:26px 0; padding:18px; background:#07100e; border:1px solid var(--line); border-radius:10px; line-height:1.8; font-size:13px; }
-    .terminal .ok { color:var(--green); }
-    .details { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:22px 0; }
-    .detail { padding:15px; border:1px solid #263c34; border-radius:10px; background:#111d20; }
-    .detail small { display:block; color:var(--muted); margin-bottom:7px; }
-    .detail strong { font-size:16px; }
-    .location { display:block; color:var(--green); text-decoration:none; border:1px solid #315442; border-radius:9px; padding:13px; text-align:center; margin:12px 0 24px; }
-    .location:hover { background:#142a20; }
-    .question { margin:22px 0 12px; color:#dcebe2; }
-    .buttons { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    button { cursor:pointer; border:0; border-radius:9px; padding:15px 10px; font:700 13px ui-monospace,monospace; }
-    #yes { background:var(--green); color:#07120c; }
-    #no { background:#27333a; color:#e8f4ee; border:1px solid #45545c; }
-    #response { display:none; margin-top:18px; padding:16px; border:1px solid #315442; border-radius:10px; background:#0a1711; line-height:1.7; }
-    #response strong { color:var(--green); }
-    .footer { margin-top:26px; color:#71858e; font-size:11px; text-align:center; }
-    @media(max-width:420px){ .details{grid-template-columns:1fr} .buttons{grid-template-columns:1fr} }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f8dce8">
+<title>Julieta | Invitación de egreso</title>
+<style>
+:root{
+  --pink:#e98eb2;--deep:#9d416b;--pale:#fff3f7;--ink:#563747;
+  --muted:#987887;--line:#f0c7d8;--white:#fffafd;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;padding:28px 15px;display:grid;place-items:center;
+  background:
+    radial-gradient(circle at 12% 15%,#fff 0 2px,transparent 3px),
+    radial-gradient(circle at 85% 75%,#fff 0 3px,transparent 4px),
+    linear-gradient(135deg,#fbe8ef,#f7d5e3 48%,#fceef3);
+  color:var(--ink);font-family:Georgia,"Times New Roman",serif;
+}
+.card{
+  width:min(100%,650px);position:relative;overflow:hidden;
+  background:rgba(255,250,253,.96);border:1px solid #efc3d5;
+  border-radius:25px;box-shadow:0 22px 65px #9d416b25;
+}
+.top{
+  padding:13px 22px;background:#f9e3ec;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;
+  color:var(--deep);font:11px Arial,sans-serif;letter-spacing:2px;
+}
+.top span:last-child{letter-spacing:1px;color:#b17b91}
+main{padding:clamp(25px,6vw,52px);text-align:center}
+.eyebrow{font:11px Arial,sans-serif;letter-spacing:3px;color:var(--deep)}
+.flower-line{color:#d77fa3;font-size:20px;letter-spacing:10px;margin:14px 0}
+h1{font-size:clamp(42px,10vw,68px);line-height:.95;margin:12px 0;color:#a94e77;font-weight:normal}
+h1 span{display:block;font-size:.38em;letter-spacing:5px;margin-top:13px;color:#d27da0}
+.intro{max-width:470px;margin:22px auto;color:#876b79;line-height:1.8;font-size:16px}
+.terminal{
+  margin:27px 0;padding:20px;background:#fff3f7;border:1px solid #f0c7d8;
+  border-radius:15px;text-align:left;font:13px/2 ui-monospace,monospace;color:#876276;
+}
+.terminal strong{color:#b34e7b;font-weight:600}
+.details{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:24px 0}
+.detail{padding:17px 10px;border:1px solid var(--line);border-radius:14px;background:#fff8fb}
+.detail small{display:block;font:10px Arial,sans-serif;letter-spacing:2px;color:#b17b91;margin-bottom:9px}
+.detail strong{font-size:17px;color:#87425f;font-weight:normal}
+.location{
+  display:block;padding:15px;margin:17px 0 27px;border-radius:12px;
+  border:1px solid #d98bab;background:#fbe8ef;color:#98466b;text-decoration:none;
+  font:11px Arial,sans-serif;letter-spacing:1.5px;transition:.2s;
+}
+.location:hover{background:#f5d4e1;transform:translateY(-1px)}
+.question{margin:25px 0 15px;color:#80566b;font-size:18px}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{
+  border:0;border-radius:12px;padding:16px 10px;cursor:pointer;
+  font: bold 11px Arial,sans-serif;letter-spacing:1px;transition:.2s;
+}
+button:hover{transform:translateY(-2px);filter:brightness(.98)}
+#yes{background:#c96891;color:white;box-shadow:0 7px 16px #c9689130}
+#no{background:#f4e5eb;color:#895c70;border:1px solid #e8cbd7}
+#response{
+  display:none;position:relative;margin-top:22px;padding:22px 17px;
+  border:1px solid #e9b4ca;border-radius:15px;background:#fff1f6;
+  line-height:1.8;color:#86516a;overflow:hidden;
+}
+#response strong{color:#ad4d78}
+#response.celebrate{animation:pop .45s ease}
+.footer{margin-top:30px;color:#b18b9c;font:10px Arial,sans-serif;letter-spacing:1px}
+#petals{position:absolute;inset:0;pointer-events:none;overflow:hidden;display:none}
+.petal{
+  position:absolute;top:-35px;width:15px;height:22px;border-radius:90% 10% 90% 10%;
+  background:linear-gradient(135deg,#f5b8ce,#d96f9c);
+  animation:fall 3.8s linear forwards;opacity:.9;
+}
+@keyframes fall{to{transform:translateY(620px) rotate(650deg);opacity:0}}
+@keyframes pop{0%{transform:scale(.96)}100%{transform:scale(1)}}
+@media(max-width:430px){.details{grid-template-columns:1fr 1fr}.detail strong{font-size:15px}.buttons{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
-  <div class="window">
-    <div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span>invitacion.exe</span></div>
-    <main>
-      <div class="tag">[ NOTIFICACIÓN DEL SISTEMA ]</div>
-      <h1>EGRESO<em>.exe</em></h1>
-      <p class="subtitle">Después de sobrevivir a trabajos prácticos, entregas a último momento y errores que “andaban en mi compu”, llegó el momento de festejar.</p>
+<div class="card">
+  <div id="petals"></div>
+  <div class="top"><span>INVITACIÓN ESPECIAL</span><span>JULIETA · 2026</span></div>
+  <main>
+    <div class="eyebrow">UN CAPÍTULO SE CIERRA, OTRO COMIENZA</div>
+    <div class="flower-line" aria-hidden="true">✿　✿　✿</div>
+    <h1>¡Me egreso!<span>JULIETA ESPINOSA</span></h1>
+    <p class="intro">Después de tantos trabajos prácticos, entregas a último momento y errores que “andaban en mi compu”, llegó el momento de festejar. Quiero compartir esta noche con vos.</p>
 
-      <div class="terminal">
-        <div>&gt; iniciando evento...</div>
-        <div>&gt; anfitriona: <span class="ok">Julieta Espinosa</span></div>
-        <div>&gt; motivo: <span class="ok">¡ME EGRESO!</span></div>
-        <div>&gt; actividad: <span class="ok">cena de festejo</span></div>
-        <div>&gt; estado: esperando_confirmación<span class="ok">_</span></div>
-      </div>
+    <div class="terminal">
+      &gt; iniciando festejo...<br>
+      &gt; anfitriona: <strong>Julieta Espinosa</strong><br>
+      &gt; motivo: <strong>¡FIN DE UNA ETAPA!</strong><br>
+      &gt; actividad: <strong>cena de egresada</strong><br>
+      &gt; estado: <strong>esperando tu confirmación...</strong>
+    </div>
 
-      <div class="details">
-        <div class="detail"><small>FECHA</small><strong>30 de noviembre</strong></div>
-        <div class="detail"><small>HORA</small><strong>21:00 hs</strong></div>
-        <div class="detail"><small>PLAN</small><strong>Cena de egresada</strong></div>
-        <div class="detail"><small>DRESS CODE</small><strong>Venir con hambre</strong></div>
-      </div>
+    <div class="details">
+      <div class="detail"><small>FECHA</small><strong>30 de noviembre</strong></div>
+      <div class="detail"><small>HORA</small><strong>21:00 hs</strong></div>
+      <div class="detail"><small>PLAN</small><strong>Cena de egresada</strong></div>
+      <div class="detail"><small>ÚNICO REQUISITO</small><strong>Venir con hambre</strong></div>
+    </div>
 
-      <a class="location" href="https://maps.app.goo.gl/SmMSMqcDxmhFZi7b6?g_st=ac" target="_blank" rel="noopener">[ ABRIR UBICACIÓN EN GOOGLE MAPS ]</a>
+    <a class="location" href="https://maps.app.goo.gl/SmMSMqcDxmhFZi7b6?g_st=ac" target="_blank" rel="noopener">VER UBICACIÓN EN GOOGLE MAPS</a>
 
-      <p class="question">&gt; ¿Confirmás asistencia a la cena?</p>
-      <div class="buttons">
-        <button id="yes" onclick="answer(true)">CONFIRMAR.exe</button>
-        <button id="no" onclick="answer(false)">NO_PUEDO.exe</button>
-      </div>
-      <div id="response" role="status" aria-live="polite"></div>
-      <div class="footer">© 2026 JULIETA · No cerrar esta ventana sin responder.</div>
-    </main>
-  </div>
-  <script>
-    function answer(yes) {
-      const box = document.getElementById('response');
-      box.style.display = 'block';
-      if (yes) {
-        box.innerHTML = '<strong>[ CONFIRMACIÓN EXITOSA ]</strong><br>Invitado/a agregado/a a la lista.<br>Se ha desbloqueado el logro: <strong>“Vino a comer después de tantos años de estudiar”.</strong><br>Nos vemos el 30. ¡No llegues con hambre falsa!';
-      } else {
-        box.innerHTML = '<strong>[ ERROR 404: GANAS DE VENIR NO ENCONTRADAS ]</strong><br>Tu respuesta fue registrada... pero Julieta no se hace responsable de las consecuencias sociales de este rechazo.';
-      }
-    }
-  </script>
+    <p class="question">¿Me acompañás en este festejo?</p>
+    <div class="buttons">
+      <button id="yes" onclick="answer(true)">SÍ, AHÍ ESTARÉ</button>
+      <button id="no" onclick="answer(false)">NO PUEDO IR</button>
+    </div>
+    <div id="response" role="status" aria-live="polite"></div>
+    <div class="footer">30 · 11 · 2026 &nbsp; — &nbsp; TE ESPERO</div>
+  </main>
+</div>
+<script>
+function answer(yes){
+  const box=document.getElementById('response');
+  box.style.display='block';
+  box.classList.remove('celebrate');
+  void box.offsetWidth;
+  box.classList.add('celebrate');
+  if(yes){
+    box.innerHTML='<strong>¡CONFIRMACIÓN EXITOSA!</strong><br>Ya estás en la lista de invitados.<br>Logro desbloqueado: sobreviviste a la invitación y ahora toca festejar.<br><strong>¡Nos vemos el 30!</strong>';
+    showerFlowers();
+  }else{
+    box.innerHTML='<strong>RESPUESTA REGISTRADA</strong><br>Qué pena que no puedas venir. Tu ausencia quedará guardada en los archivos del sistema.';
+  }
+}
+function showerFlowers(){
+  const layer=document.getElementById('petals');
+  layer.style.display='block';
+  for(let i=0;i<34;i++){
+    const petal=document.createElement('i');
+    petal.className='petal';
+    petal.style.left=Math.random()*100+'%';
+    petal.style.animationDelay=(Math.random()*1.5)+'s';
+    petal.style.animationDuration=(2.8+Math.random()*2)+'s';
+    petal.style.transform='rotate('+(Math.random()*360)+'deg)';
+    layer.appendChild(petal);
+    setTimeout(()=>petal.remove(),5500);
+  }
+  setTimeout(()=>{if(!layer.children.length)layer.style.display='none'},6000);
+}
+</script>
 </body>
 </html>'''
 
 path = Path("/mnt/data/invitacion_egreso_julieta.html")
 path.write_text(html, encoding="utf-8")
-print(path, path.stat().st_size)
+print(f"Archivo creado: {path} ({path.stat().st_size} bytes)")
