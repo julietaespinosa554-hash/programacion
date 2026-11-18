@@ -1,0 +1,98 @@
+from pathlib import Path
+
+html = r'''<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d12">
+  <title>EGRESO.exe | Invitación</title>
+  <style>
+    :root { --bg:#080d12; --panel:#101a22; --green:#65f6a6; --muted:#9bb0bd; --line:#234033; }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; min-height:100vh; padding:28px 16px; display:grid; place-items:center;
+      background:radial-gradient(circle at 50% 0%, #173329 0, #0b1419 38%, var(--bg) 75%);
+      color:#e8f4ee; font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    .window { width:min(100%,620px); border:1px solid #315442; border-radius:16px; overflow:hidden;
+      background:rgba(12,20,25,.96); box-shadow:0 24px 80px #0009; }
+    .bar { display:flex; align-items:center; gap:8px; padding:13px 16px; background:#17242a; border-bottom:1px solid #294238; }
+    .dot { width:10px; height:10px; border-radius:50%; background:#f36c6c; }
+    .dot:nth-child(2){background:#f3c969}.dot:nth-child(3){background:#65d99a}
+    .bar span { margin-left:auto; color:#9bb0bd; font-size:12px; }
+    main { padding:clamp(22px,6vw,42px); }
+    .tag { color:var(--green); font-size:12px; letter-spacing:2px; }
+    h1 { margin:12px 0 8px; font-size:clamp(30px,8vw,48px); line-height:1; }
+    h1 em { color:var(--green); font-style:normal; }
+    .subtitle { color:var(--muted); line-height:1.6; }
+    .terminal { margin:26px 0; padding:18px; background:#07100e; border:1px solid var(--line); border-radius:10px; line-height:1.8; font-size:13px; }
+    .terminal .ok { color:var(--green); }
+    .details { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:22px 0; }
+    .detail { padding:15px; border:1px solid #263c34; border-radius:10px; background:#111d20; }
+    .detail small { display:block; color:var(--muted); margin-bottom:7px; }
+    .detail strong { font-size:16px; }
+    .location { display:block; color:var(--green); text-decoration:none; border:1px solid #315442; border-radius:9px; padding:13px; text-align:center; margin:12px 0 24px; }
+    .location:hover { background:#142a20; }
+    .question { margin:22px 0 12px; color:#dcebe2; }
+    .buttons { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    button { cursor:pointer; border:0; border-radius:9px; padding:15px 10px; font:700 13px ui-monospace,monospace; }
+    #yes { background:var(--green); color:#07120c; }
+    #no { background:#27333a; color:#e8f4ee; border:1px solid #45545c; }
+    #response { display:none; margin-top:18px; padding:16px; border:1px solid #315442; border-radius:10px; background:#0a1711; line-height:1.7; }
+    #response strong { color:var(--green); }
+    .footer { margin-top:26px; color:#71858e; font-size:11px; text-align:center; }
+    @media(max-width:420px){ .details{grid-template-columns:1fr} .buttons{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="bar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span>invitacion.exe</span></div>
+    <main>
+      <div class="tag">[ NOTIFICACIÓN DEL SISTEMA ]</div>
+      <h1>EGRESO<em>.exe</em></h1>
+      <p class="subtitle">Después de sobrevivir a trabajos prácticos, entregas a último momento y errores que “andaban en mi compu”, llegó el momento de festejar.</p>
+
+      <div class="terminal">
+        <div>&gt; iniciando evento...</div>
+        <div>&gt; anfitriona: <span class="ok">Julieta Espinosa</span></div>
+        <div>&gt; motivo: <span class="ok">¡ME EGRESO!</span></div>
+        <div>&gt; actividad: <span class="ok">cena de festejo</span></div>
+        <div>&gt; estado: esperando_confirmación<span class="ok">_</span></div>
+      </div>
+
+      <div class="details">
+        <div class="detail"><small>FECHA</small><strong>30 de noviembre</strong></div>
+        <div class="detail"><small>HORA</small><strong>21:00 hs</strong></div>
+        <div class="detail"><small>PLAN</small><strong>Cena de egresada</strong></div>
+        <div class="detail"><small>DRESS CODE</small><strong>Venir con hambre</strong></div>
+      </div>
+
+      <a class="location" href="https://maps.app.goo.gl/SmMSMqcDxmhFZi7b6?g_st=ac" target="_blank" rel="noopener">[ ABRIR UBICACIÓN EN GOOGLE MAPS ]</a>
+
+      <p class="question">&gt; ¿Confirmás asistencia a la cena?</p>
+      <div class="buttons">
+        <button id="yes" onclick="answer(true)">CONFIRMAR.exe</button>
+        <button id="no" onclick="answer(false)">NO_PUEDO.exe</button>
+      </div>
+      <div id="response" role="status" aria-live="polite"></div>
+      <div class="footer">© 2026 JULIETA · No cerrar esta ventana sin responder.</div>
+    </main>
+  </div>
+  <script>
+    function answer(yes) {
+      const box = document.getElementById('response');
+      box.style.display = 'block';
+      if (yes) {
+        box.innerHTML = '<strong>[ CONFIRMACIÓN EXITOSA ]</strong><br>Invitado/a agregado/a a la lista.<br>Se ha desbloqueado el logro: <strong>“Vino a comer después de tantos años de estudiar”.</strong><br>Nos vemos el 30. ¡No llegues con hambre falsa!';
+      } else {
+        box.innerHTML = '<strong>[ ERROR 404: GANAS DE VENIR NO ENCONTRADAS ]</strong><br>Tu respuesta fue registrada... pero Julieta no se hace responsable de las consecuencias sociales de este rechazo.';
+      }
+    }
+  </script>
+</body>
+</html>'''
+
+path = Path("/mnt/data/invitacion_egreso_julieta.html")
+path.write_text(html, encoding="utf-8")
+print(path, path.stat().st_size)
